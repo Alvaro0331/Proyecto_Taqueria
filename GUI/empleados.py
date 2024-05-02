@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
+from DB.dbempleado import obtener_meseros
 
 def crear_contenido(tab):
     label=tk.Label(tab, text="Pestaña empleados").pack(padx=10, pady=10)
@@ -25,3 +26,9 @@ def empleados_lista():
     tree.heading("Telefono",text="Telefono")
     tree.heading("Turno",text="Turno")
     
+    # Obtener los resultados de la consulta SQL utilizando la función obtener_meseros() de DbManager
+    resultados = obtener_meseros()
+
+    # Agregar los resultados al treeview
+    for resultado in resultados:
+        tree.insert("", tk.END, values=resultado)
