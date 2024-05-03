@@ -10,6 +10,8 @@ def empleado_detalles(tree):
         # Obtener los valores del item seleccionado
         valores = tree.item(item, 'values')
         if valores:
+            id_empleado = valores[0]  # Primer valor es el ID del empleado
+            print("ID del empleado seleccionado:", id_empleado)  # Imprimir el ID en la consola
             # Crear una nueva ventana
             ventana_detalle = tk.Toplevel()
             ventana_detalle.title("Editar Empleado")
@@ -28,7 +30,7 @@ def empleado_detalles(tree):
             turno_combobox.grid(row=2, column=1, padx=5, pady=5)
             
             # Agregar botones
-            btn_guardar = ttk.Button(ventana_detalle, text="Guardar")#, command=lambda: guardar_cambios(ventana_detalle))
+            btn_guardar = ttk.Button(ventana_detalle, text="Guardar", command=lambda: actualizar_mesero(id_empleado, nombre_entry.get(), telefono_entry.get(), turno_combobox.get()))
             btn_guardar.grid(row=3, column=0, padx=5, pady=5)
 
             btn_cancelar = ttk.Button(ventana_detalle, text="Cancelar", command=ventana_detalle.destroy)

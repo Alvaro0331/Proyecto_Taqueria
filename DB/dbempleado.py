@@ -22,12 +22,13 @@ def actualizar_mesero(id_empleado, nombre, telefono, turno):
     db=dbManager()
     #Consulta SQL
     try:
-        query="UPDATE empleados SET nombre=%s, telefono=%s, turno=%s WHERE id=%s"
+        query="UPDATE mesero SET nombre=%s, telefono=%s, turno=%s WHERE ID_Mesero=%s"
         values = (nombre, telefono, turno, id_empleado)
-        db.cursor.execute(query)
+        db.cursor.execute(query, values)
         #guardar cambios en la base de datos
         db.conn.commit()
         exito=True
+        messagebox.showinfo("Actualización exitosa", "Los datos del empleado se actualizaron correctamente.")
     except Exception as error:
         messagebox.showerror("Error al actualizar los datos", error)
     
