@@ -1,12 +1,30 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
-from DB.dbempleado import obtener_meseros
+from DB.dbempleado import *
+from GUI.empleado_detalle import *
 
 def crear_contenido(tab):
-    label=tk.Label(tab, text="Pestaña empleados").pack(padx=10, pady=10)
+    #widgets
+    nombreLabel=tk.Label(tab, text="Nombre:")
+    nombreEntry=tk.Entry(tab,width=50)
+    telefonoLabel=tk.Label(tab, text="Teléfono:")
+    telefonoEntry=tk.Entry(tab,width=11)
+    # Lista de opciones para el Combobox
+    opciones = ["Matutino", "Vespertino"]
+    turnoLabel=tk.Label(tab, text="Turno:")
+    turnoCombobox=ttk.Combobox(tab,values=opciones,state="readonly")
     
     #boton para ver los empleados registrados
-    boton=ttk.Button(tab, text="Lista de empleados", command=empleados_lista).pack(pady=10)
+    botonEmpleados=ttk.Button(tab, text="Lista de empleados", command=empleados_lista)
+    
+    #Colocar widgets
+    nombreLabel.grid(row=0, column=0)
+    nombreEntry.grid(row=0, column=1)
+    telefonoLabel.grid(row=1,column=0)
+    telefonoEntry.grid(row=1, column=1)
+    botonEmpleados.grid(row=4,column=2)
+    turnoLabel.grid(row=3,column=0)
+    turnoCombobox.grid(row=3, column=1)
     
 def empleados_lista():
     #mostrar una nueva ventana
@@ -32,3 +50,6 @@ def empleados_lista():
     # Agregar los resultados al treeview
     for resultado in resultados:
         tree.insert("", tk.END, values=resultado)
+        
+    # Asignar evento de clic a cada item del Treeview
+    tree.bind("<ButtonRelease-1>", empleado_detalles(tree))
