@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
+from DB.dbproveedor import *
 
 def crear_contenido(tab):
     #widgets
@@ -11,7 +12,7 @@ def crear_contenido(tab):
     #Boton para registrar nuevo empleado
     botonProvAlta=ttk.Button(tab,text="Registrar proveedor")#, command=lambda: validar_campos(nombreEntry, telefonoEntry, turnoCombobox))
     #boton para ver los empleados registrados
-    botonProvList=ttk.Button(tab, text="Lista de proveedores")#, command=empleados_lista)
+    botonProvList=ttk.Button(tab, text="Lista de proveedores", command=proveedor_lista)
     
     #Colocar widgets
     nombreLabel.place(x=20, y=20)
@@ -28,4 +29,39 @@ def validar_campos(nombreEntry, telefonoEntry):
     telefono = telefonoEntry.get()
     if nombre=='' or telefono=='':
         messagebox.showerror("Error", "Faltan campos por llenar.")
+
+def proveedor_lista():
+    #mostrar una nueva ventana
+    ventana_empleados=tk.Toplevel()
+    ventana_empleados.title("Lista de empleados")
     
+    # Crear un Frame para contener el Treeview y el Scrollbar
+    frame = tk.Frame(ventana_empleados)
+    frame.pack(fill=tk.BOTH, expand=True)
+    
+    # Crear el Treeview
+    tree = ttk.Treeview(frame)
+    tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    
+    # Crear un Scrollbar vertical
+    scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    
+    # Configurar el Treeview para que use el Scrollbar vertical
+    tree.configure(yscrollcommand=scrollbar.set)
+    
+    # Configurar columnas
+    tree["columns"] = ("ID", "Nombre", "Telefono")
+    tree.column("#0", width=0, stretch=tk.NO)  # Ocultar primera columna
+    
+    # Configurar encabezados
+    tree.heading("ID", text="ID")
+    tree.heading("Nombre", text="Nombre")
+    tree.heading("Telefono", text="Telefono")
+    
+    # Obtener los resultados de la consulta SQL
+    resultados = obtener_proveedores()
+
+    # Agregar los resultados al treeview
+    for resultado in resultados:
+        tree.insert("", tk.END, values=resultado)
