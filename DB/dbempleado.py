@@ -1,6 +1,22 @@
 from tkinter import messagebox
 from DB.dbmanager import dbManager
 
+def mesero_alta(nombre,telefono,turno):
+    exito=False
+    db=dbManager()
+    try:
+        query="INSERT INTO mesero (Nombre,Telefono,Turno) VALUES (%s,%s,%s)"
+        values=(nombre,telefono,turno)
+        db.cursor.execute(query,values)
+        #Guardar cambios
+        db.conn.commit()
+        exito=True
+        messagebox.showinfo("Registro exitoso", "Mesero registrado correctamente.")
+    except Exception as error:
+        messagebox.showerror("Error al registrar al mesero", error)
+    db.close()
+    return exito
+
 def obtener_meseros():
     #Instancia del dbManager
     db=dbManager()
