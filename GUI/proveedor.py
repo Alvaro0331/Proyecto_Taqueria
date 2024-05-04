@@ -1,10 +1,11 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
 from DB.dbproveedor import *
+from GUI.proveedor_detalle import *
 
 def crear_contenido(tab):
     #widgets
-    nombreLabel=tk.Label(tab, text="Nombre:")
+    nombreLabel=tk.Label(tab, text="Proveedor:")
     nombreEntry=tk.Entry(tab,width=50)
     telefonoLabel=tk.Label(tab, text="Teléfono:")
     telefonoEntry=tk.Entry(tab,width=11)
@@ -33,7 +34,7 @@ def validar_campos(nombreEntry, telefonoEntry):
 def proveedor_lista():
     #mostrar una nueva ventana
     ventana_empleados=tk.Toplevel()
-    ventana_empleados.title("Lista de empleados")
+    ventana_empleados.title("Lista de proveedores")
     
     # Crear un Frame para contener el Treeview y el Scrollbar
     frame = tk.Frame(ventana_empleados)
@@ -65,3 +66,6 @@ def proveedor_lista():
     # Agregar los resultados al treeview
     for resultado in resultados:
         tree.insert("", tk.END, values=resultado)
+        
+    # Asignar evento de clic a cada item del Treeview
+    tree.bind("<ButtonRelease-1>", proveedor_detalles(tree))
