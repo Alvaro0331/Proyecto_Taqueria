@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
-from DB.dbempleado import *
 from GUI.empleado_detalle import *
 
 def crear_contenido(tab):
