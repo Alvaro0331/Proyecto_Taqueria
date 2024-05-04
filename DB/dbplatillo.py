@@ -34,3 +34,19 @@ def actualizar_platillo(id_platillo, nombre,descripcion):
     
     db.close()
     return exito
+
+def platillo_alta(nombre,comentario):
+    exito=False
+    db=dbManager()
+    try:
+        query="INSERT INTO platillo (Nombre,Comentarios) VALUES (%s,%s)"
+        values=(nombre,comentario)
+        db.cursor.execute(query,values)
+        #Guardar cambios
+        db.conn.commit()
+        exito=True
+        messagebox.showinfo("Registro exitoso", "Platillo registrado correctamente.")
+    except Exception as error:
+        messagebox.showerror("Error al registrar el platillo", error)
+    db.close()
+    return exito
