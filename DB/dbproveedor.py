@@ -16,3 +16,19 @@ def obtener_proveedores():
     db.close()
     #Retornar resultados
     return resultados
+
+def proveedor_alta(nombre,telefono):
+    exito=False
+    db=dbManager()
+    try:
+        query="INSERT INTO proveedor (Nombre,Telefono) VALUES (%s,%s)"
+        values=(nombre,telefono)
+        db.cursor.execute(query,values)
+        #Guardar cambios
+        db.conn.commit()
+        exito=True
+        messagebox.showinfo("Registro exitoso", "Proveedor registrado correctamente.")
+    except Exception as error:
+        messagebox.showerror("Error al registrar al mesero", error)
+    db.close()
+    return exito

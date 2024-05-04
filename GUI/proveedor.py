@@ -11,7 +11,7 @@ def crear_contenido(tab):
     telefonoEntry=tk.Entry(tab,width=11)
     
     #Boton para registrar nuevo empleado
-    botonProvAlta=ttk.Button(tab,text="Registrar proveedor")#, command=lambda: validar_campos(nombreEntry, telefonoEntry, turnoCombobox))
+    botonProvAlta=ttk.Button(tab,text="Registrar proveedor", command=lambda: validar_campos(nombreEntry, telefonoEntry))
     #boton para ver los empleados registrados
     botonProvList=ttk.Button(tab, text="Lista de proveedores", command=proveedor_lista)
     
@@ -30,6 +30,8 @@ def validar_campos(nombreEntry, telefonoEntry):
     telefono = telefonoEntry.get()
     if nombre=='' or telefono=='':
         messagebox.showerror("Error", "Faltan campos por llenar.")
+    else:
+        proveedor_alta(nombre,telefono)
 
 def proveedor_lista():
     #mostrar una nueva ventana
