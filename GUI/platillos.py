@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
+from DB.dbplatillo import *
+from GUI.platillo_detalle import *
 
 def crear_contenido(tab):
     # Crear un Frame para contener el Treeview y el Scrollbar
@@ -25,6 +27,19 @@ def crear_contenido(tab):
     tree.heading("ID",text="ID")
     tree.heading("Nombre",text="Nombre")
     tree.heading("Comentarios",text="Comentarios")
+    # Configurar el ancho del encabezado de la columna "ID" (por ejemplo)
+    tree.column("ID", width=1)
+    tree.column("Nombre", width=3)
+    
+    #Obtener los resultados de la consulta SQL
+    resultados = obtener_platillos()
+
+    # Agregar los resultados al treeview
+    for resultado in resultados:
+        tree.insert("", tk.END, values=resultado)
+    
+    # Asignar evento de clic a cada item del Treeview
+    tree.bind("<ButtonRelease-1>", platillo_detalle(tree))
     
     # Crear un Frame para contener botones
     frame = tk.Frame(tab)
