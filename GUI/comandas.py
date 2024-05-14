@@ -52,6 +52,13 @@ def detalles_comanda(treeview):
         treeview_detalles.heading("Precio_Venta", text="Precio Venta")
         treeview_detalles.heading("FK_Producto", text="FK Producto")
         treeview_detalles.heading("FK_Platillo", text="FK Platillo")
+        
+        #Obtener los resultados de la consulta SQL
+        resultados = obtener_detalle_comanda(id_comanda)
+
+        # Agregar los resultados al treeview
+        for resultado in resultados:
+            treeview_detalles.insert("", tk.END, values=resultado)
 
         treeview_detalles.pack(fill=tk.BOTH, expand=True)
 

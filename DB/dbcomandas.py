@@ -23,7 +23,7 @@ def obtener_detalle_comanda(id_comanda):
     db=dbManager()
     
     #Consulta SQL
-    query="SELECT ID_DetalleC, Cantidad, Hora, Precio_Venta, FK_Producto, FK_Platillo FROM comanda WHERE FK_Comanda = %s"
+    query="SELECT ID_DetalleC, Cantidad, Hora, Precio_Venta, FK_Producto, FK_Platillo FROM detalle_comanda WHERE FK_Comanda = %s"
     values=(id_comanda,)
     db.cursor.execute(query,values)
     
