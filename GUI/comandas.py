@@ -1,40 +1,61 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
 from DB.dbcomandas import *
-from GUI.comanda_detalle import *
 
 def crear_contenido(tab):
-    # Crear un Frame para contener el Treeview y el Scrollbar
-    frame = tk.Frame(tab)
-    frame.pack(fill=tk.BOTH, expand=True)
+    # Crear el Treeview para mostrar las comandas
+    treeview = ttk.Treeview(tab, columns=("Numero_Folio", "Fecha", "FK_Mesa", "Total_Pagar"), show="headings")
+    treeview.heading("Numero_Folio", text="Número de Folio")
+    treeview.heading("Fecha", text="Fecha")
+    treeview.heading("FK_Mesa", text="Mesa")
+    treeview.heading("Total_Pagar", text="Total a Pagar")
     
-    # Crear el Treeview
-    tree = ttk.Treeview(frame)
-    tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-    
-    # Crear un Scrollbar vertical
-    scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
-    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    
-    # Configurar el Treeview para que use el Scrollbar vertical
-    tree.configure(yscrollcommand=scrollbar.set)
-    
-    #configurar columnas
-    tree["columns"]=("Folio","Fecha","Mesa","Total a pagar")
-    tree.column("#0", width=0,stretch=tk.NO) #ocultar primera columna
-    
-    #configurar encabezados
-    tree.heading("Folio",text="Folio")
-    tree.heading("Fecha",text="Fecha")
-    tree.heading("Mesa",text="Mesa")
-    tree.heading("Total a pagar",text="Total a pagar")
-    
-    #Obtener los resultados de la consulta SQL
-    resultados = obtener_comandas()
+    # Crear el scrollbar vertical
+    scrollbar = ttk.Scrollbar(tab, orient="vertical", command=treeview.yview)
+    scrollbar.pack(side="right", fill="y")
 
+    treeview.configure(yscrollcommand=scrollbar.set)
+    
+    treeview.pack(fill=tk.BOTH, expand=True)
+
+    #Obtener resultados de la consulta sql
+    resultados=obtener_comandas()
+    
     # Agregar los resultados al treeview
     for resultado in resultados:
-        tree.insert("", tk.END, values=resultado)
+        treeview.insert("", tk.END, values=resultado)
     
-    # Asignar evento de clic a cada item del Treeview
-    tree.bind("<ButtonRelease-1>", detalle_comanda(tree))
+    #Agregar el evento select al treeview
+    treeview.bind("<<TreeviewSelect>>", lambda event: detalles_comanda(treeview))
+    
+    
+#Ventana detalle comanda
+def detalles_comanda(treeview):
+    # Obtener el registro seleccionado
+    item = treeview.focus()
+
+    # Obtener los detalles del registro seleccionado
+    detalles = treeview.item(item, "values")
+    
+    if detalles:
+        id_comanda = detalles[0]  # Primer valor es el ID del empleado
+        print("ID de la comanda seleccionada:", id_comanda)  # Imprimir el ID en la consola
+        # Crear y configurar la ventana emergente
+        ventana_emergente = tk.Toplevel()
+        ventana_emergente.title("Detalles de la comanda")
+
+        # Crear el Treeview para mostrar los detalles de la comanda
+        treeview_detalles = ttk.Treeview(ventana_emergente, columns=("ID_DetalleC", "Cantidad", "Hora", "Precio_Venta", "FK_Producto", "FK_Platillo"), show="headings")
+        treeview_detalles.heading("ID_DetalleC", text="ID Detalle")
+        treeview_detalles.heading("Cantidad", text="Cantidad")
+        treeview_detalles.heading("Hora", text="Hora")
+        treeview_detalles.heading("Precio_Venta", text="Precio Venta")
+        treeview_detalles.heading("FK_Producto", text="FK Producto")
+        treeview_detalles.heading("FK_Platillo", text="FK Platillo")
+
+        treeview_detalles.pack(fill=tk.BOTH, expand=True)
+
+        # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
+        ventana_emergente.grab_set()
+        ventana_emergente.focus_set()
+        ventana_emergente.wait_window()

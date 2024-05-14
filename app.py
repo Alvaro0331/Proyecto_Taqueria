@@ -28,7 +28,6 @@ def run_app():
     productos(tab4)
     comandas(tab5)
     
-    
     #agregar pestañas al notebook
     notebook.add(tab1, text="Empleados")
     notebook.add(tab2, text="Proveedores")
