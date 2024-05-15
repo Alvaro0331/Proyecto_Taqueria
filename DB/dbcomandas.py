@@ -85,12 +85,25 @@ def agregar_detalle_comanda(id_elemento, tipo, cantidad, precio_venta,id_comanda
         query_id = f"SELECT ID_{tipo} FROM {tipo.lower()} WHERE ID_{tipo} = %s"
         db.cursor.execute(query_id, (id_elemento,))
         id_elemento_existente = db.cursor.fetchone()
-
+        
         if id_elemento_existente:
-            # Consulta SQL para insertar en la tabla detalle_comanda
-            query_insert = "INSERT INTO detalle_comanda (Cantidad, Hora, Precio_Venta, FK_Comanda, Tipo, {}) VALUES (%s, CURTIME(), %s, %s, %s,%s)".format(columna_fk)
-            values = (cantidad, precio_venta,id_comanda, tipo, id_elemento)
-            db.cursor.execute(query_insert, values)
+            # Consulta SQL para verificar si el producto/platillo ya está presente en el detalle de la comanda
+            query_existencia = f"SELECT ID_DetalleC FROM detalle_comanda WHERE {columna_fk} = %s AND FK_Comanda = %s AND Tipo = %s"
+            db.cursor.execute(query_existencia, (id_elemento, id_comanda, tipo))
+            detalle_existente = db.cursor.fetchone()
+
+            if detalle_existente:  # Si el producto/platillo ya está presente, actualizar la fila existente
+                id_detalle_existente = detalle_existente[0]
+                # Actualizar la cantidad y el precio de venta del producto/platillo existente
+                query_update = "UPDATE detalle_comanda SET Cantidad = Cantidad + %s, Precio_Venta = %s WHERE ID_DetalleC = %s"
+                values_update = (cantidad, precio_venta, id_detalle_existente)
+                db.cursor.execute(query_update, values_update)
+            else:  # Si el producto/platillo no está presente, insertar una nueva fila
+                # Consulta SQL para insertar en la tabla detalle_comanda
+                query_insert = f"INSERT INTO detalle_comanda (Cantidad, Hora, Precio_Venta, FK_Comanda, Tipo, {columna_fk}) VALUES (%s, CURTIME(), %s, %s, %s, %s)"
+                values_insert = (cantidad, precio_venta, id_comanda, tipo, id_elemento)
+                db.cursor.execute(query_insert, values_insert)
+
             # Guardar cambios
             db.conn.commit()
             exito = True
