@@ -69,6 +69,11 @@ def platillo_alta():
     btn_cancelar = ttk.Button(ventana_alta, text="Cancelar", command=ventana_alta.destroy)
     btn_cancelar.grid(row=3, column=2, padx=5, pady=5)
     
+    # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
+    ventana_alta.grab_set()
+    ventana_alta.focus_set()
+    ventana_alta.wait_window()
+    
 #Validar que los campos no esten vacios
 def validar_campos(nombreEntry, comentarioEntry):
     # Obtener el contenido de los Entry y del Combobox

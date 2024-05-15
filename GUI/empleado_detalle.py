@@ -42,6 +42,11 @@ def empleado_detalles(tree):
             # Obtener el turno actual del empleado de la columna 4 (índice 3)
             turno_actual = valores[3]
             turno_combobox.set(turno_actual)
+            
+            # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
+            ventana_detalle.grab_set()
+            ventana_detalle.focus_set()
+            ventana_detalle.wait_window()
         else:
             messagebox.showerror("Error", "Por favor seleccione un empleado.")
             

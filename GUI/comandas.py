@@ -83,7 +83,7 @@ def detalles_comanda(treeview):
         # Campos del formulario
         lbl_producto = tk.Label(frame_formulario, text="Producto/Platillo:")
         lbl_producto.grid(row=0, column=0, padx=5)
-        combo_producto = ttk.Combobox(frame_formulario, values=[f"{id_producto}: {nombre} ({tipo})" for id_producto, nombre, tipo in productos + platillos])
+        combo_producto = ttk.Combobox(frame_formulario, values=[f"{id_producto}: {nombre} ({tipo})" for id_producto, nombre, tipo in productos + platillos], state="readonly")
         combo_producto.grid(row=0, column=1, padx=5)
         combo_producto.config(values=[f"{id_producto}: {nombre} ({tipo})" for id_producto, nombre, tipo in productos + platillos],)
         lbl_cantidad = tk.Label(frame_formulario, text="Cantidad:")
