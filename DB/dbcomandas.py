@@ -74,7 +74,7 @@ def platillos_disponibles():
     return platillos_con_tipo
 
 
-def agregar_detalle_comanda(id_elemento, tipo, cantidad, precio_venta):
+def agregar_detalle_comanda(id_elemento, tipo, cantidad, precio_venta,id_comanda):
     exito = False
     db = dbManager()
     try:
@@ -88,8 +88,8 @@ def agregar_detalle_comanda(id_elemento, tipo, cantidad, precio_venta):
 
         if id_elemento_existente:
             # Consulta SQL para insertar en la tabla detalle_comanda
-            query_insert = "INSERT INTO detalle_comanda (Cantidad, Hora, Precio_Venta, Tipo, {}) VALUES (%s, CURTIME(), %s, %s, %s)".format(columna_fk)
-            values = (cantidad, precio_venta, tipo, id_elemento)
+            query_insert = "INSERT INTO detalle_comanda (Cantidad, Hora, Precio_Venta, FK_Comanda, Tipo, {}) VALUES (%s, CURTIME(), %s, %s, %s,%s)".format(columna_fk)
+            values = (cantidad, precio_venta,id_comanda, tipo, id_elemento)
             db.cursor.execute(query_insert, values)
             # Guardar cambios
             db.conn.commit()
