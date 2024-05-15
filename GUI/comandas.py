@@ -27,9 +27,9 @@ def crear_contenido(tab):
     
     #Agregar el evento select al treeview
     treeview.bind("<<TreeviewSelect>>", lambda event: detalles_comanda(treeview))
-    
-    
-#Ventana detalle comanda
+
+
+###Ventana detalle comanda###
 def detalles_comanda(treeview):
     # Obtener el registro seleccionado
     item = treeview.focus()
@@ -43,6 +43,10 @@ def detalles_comanda(treeview):
         # Crear y configurar la ventana emergente
         ventana_emergente = tk.Toplevel()
         ventana_emergente.title("Detalles de la comanda")
+        
+        # Crear frame para el Treeview
+        frame_treeview = tk.Frame(ventana_emergente)
+        frame_treeview.pack(pady=10, fill="both", expand=True)
 
         # Crear el Treeview para mostrar los detalles de la comanda
         treeview_detalles = ttk.Treeview(ventana_emergente, columns=("ID_DetalleC", "Cantidad", "Hora", "Precio_Venta", "FK_Producto", "FK_Platillo"), show="headings")
@@ -53,6 +57,11 @@ def detalles_comanda(treeview):
         treeview_detalles.heading("FK_Producto", text="FK Producto")
         treeview_detalles.heading("FK_Platillo", text="FK Platillo")
         
+        # Agregar scrollbar vertical
+        scrollbar_y = ttk.Scrollbar(ventana_emergente, orient="vertical", command=treeview_detalles.yview)
+        scrollbar_y.pack(side="right", fill="y")
+        treeview_detalles.configure(yscrollcommand=scrollbar_y.set)
+        
         #Obtener los resultados de la consulta SQL
         resultados = obtener_detalle_comanda(id_comanda)
 
@@ -61,6 +70,33 @@ def detalles_comanda(treeview):
             treeview_detalles.insert("", tk.END, values=resultado)
 
         treeview_detalles.pack(fill=tk.BOTH, expand=True)
+
+        ##Formulario para agregar productos al detalle##
+        # Crear frame para el formulario de agregar productos
+        frame_formulario = tk.Frame(ventana_emergente)
+        frame_formulario.pack(pady=10)
+        
+        #Obtener platillos y productos disponibles
+        productos=productos_disponibles()
+        platillos=platillos_disponibles()
+
+        # Campos del formulario
+        lbl_producto = tk.Label(frame_formulario, text="Producto:")
+        lbl_producto.grid(row=0, column=0, padx=5)
+        
+        combo_producto = ttk.Combobox(frame_formulario, values=[f"{nombre} ({tipo})" for _, nombre, tipo in productos + platillos])
+        combo_producto.grid(row=0, column=1, padx=5)
+
+        entry_producto = tk.Entry(frame_formulario)
+        entry_producto.grid(row=0, column=1, padx=5)
+
+        lbl_cantidad = tk.Label(frame_formulario, text="Cantidad:")
+        lbl_cantidad.grid(row=1, column=0, padx=5)
+        
+        
+
+        entry_cantidad = tk.Entry(frame_formulario)
+        entry_cantidad.grid(row=1, column=1, padx=5)
 
         # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
         ventana_emergente.grab_set()
