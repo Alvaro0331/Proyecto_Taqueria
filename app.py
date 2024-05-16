@@ -6,6 +6,7 @@ from GUI.platillos import crear_contenido as platillos
 from GUI.productos import crear_contenido as productos
 from GUI.comandas import crear_contenido as comandas
 from GUI.mesas import crear_contenido as mesas
+from GUI.facturas import crear_contenido as factura
 
 def run_app():
     root=tk.Tk()
@@ -21,6 +22,7 @@ def run_app():
     tab4=ttk.Frame(notebook)
     tab5=ttk.Frame(notebook)
     tab6=ttk.Frame(notebook)
+    tab7=ttk.Frame(notebook)
     
     #Agregar contenido a las pestañas del notebook
     mesas(tab1)
@@ -29,6 +31,7 @@ def run_app():
     platillos(tab4)
     productos(tab5)
     comandas(tab6)
+    factura(tab7)
     
     #agregar pestañas al notebook
     notebook.add(tab1, text="Mesas")
@@ -37,6 +40,7 @@ def run_app():
     notebook.add(tab4, text="Platillos")
     notebook.add(tab5, text="Productos")
     notebook.add(tab6, text="Comandas")
+    notebook.add(tab7, text="Facturas")
     
     #Colocar notebook en la pestaña principal
     notebook.pack(expand=True, fill="both")

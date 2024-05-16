@@ -41,6 +41,6 @@ def platillo_detalle(tree):
             ventana_detalle.focus_set()
             ventana_detalle.wait_window()
         else:
-            messagebox.showerror("Error", "Por favor seleccione un empleado.")
+            messagebox.showerror("Error", "Por favor seleccione un platillo.")
             
     return abrir_pestana
