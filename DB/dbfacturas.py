@@ -22,6 +22,22 @@ def obtener_facturas():
     # Retornar resultados
     return resultados
 
+def obtener_proveedores():
+    #Instancia del dbManager
+    db=dbManager()
+    
+    #Consulta SQL
+    query="SELECT Nombre FROM proveedor"
+    db.cursor.execute(query)
+    
+    #Obtener resultados de la busqueda
+    resultados=db.cursor.fetchall()
+    
+    #Cerrar conexion
+    db.close()
+    #Retornar resultados
+    return [nombre[0] for nombre in resultados]
+
 def obtener_detalle_factura(id_factura):
     #Instancia del dbManager
     db=dbManager()
@@ -105,3 +121,38 @@ def agregar_detalle_factura(id_elemento,tipo,cantidad,id_factura):
         # Cerrar conexión
         db.close()
     return exito
+
+def alta_factura(proveedor):
+    idProveedor=obtener_id_proveedor(proveedor)
+    
+    if idProveedor is None:
+        print(f"No se encontró proveedor con nombre {proveedor}")
+        return False
+    db = dbManager()
+    try:
+        query = "INSERT INTO factura_compra (Fecha, FK_Proveedor) VALUES (CURDATE(), %s)"
+        values = (idProveedor,)
+        db.cursor.execute(query, values)
+        db.conn.commit()
+        return True
+    except Exception as error:
+        print("Error al abrir mesa", error)
+        return False
+    finally:
+        db.close()
+    
+
+def obtener_id_proveedor(proveedor):
+    db = dbManager()
+    try:
+        query = "SELECT ID_Proveedor FROM proveedor WHERE Nombre = %s"
+        db.cursor.execute(query, (proveedor,))
+        result = db.cursor.fetchone()
+        if result:
+            return result[0]
+        else:
+            return None
+    except Exception as error:
+        print("Error while fetching mesero ID", error)
+    finally:
+        db.close()

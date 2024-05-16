@@ -32,9 +32,19 @@ def crear_contenido(tab):
     treeview.bind("<<TreeviewSelect>>", lambda event: detalles_facturas(treeview))
     
     # Crear un Frame para contener formulario
-    frame = tk.Frame(tab)
-    frame.pack(fill=tk.BOTH, expand=True)
+    frame_formulario = tk.Frame(tab)
+    frame_formulario.pack(fill=tk.BOTH, expand=True)
     
+    #widgets
+    # Lista de opciones para el Combobox
+    opciones = obtener_proveedores()
+    proveedorLabel = tk.Label(frame_formulario, text="Proveedor:")
+    proveedorLabel.grid(row=0, column=0, padx=2, pady=5)
+    proveedorCombobox = ttk.Combobox(frame_formulario, values=opciones, state="readonly")
+    proveedorCombobox.grid(row=0, column=1, padx=2, pady=5)
+    # Boton para registrar nueva factura
+    botonFacturaAlta = ttk.Button(frame_formulario, text="Nueva factura", command=lambda: validar_campos_alta(proveedorCombobox))
+    botonFacturaAlta.grid(row=1, column=0, columnspan=2, padx=2, pady=10)
 
 #Ventana para detalle de factura#
 def detalles_facturas(treeview):
@@ -112,6 +122,13 @@ def detalles_facturas(treeview):
         for resultado in resultados:
             treeview.insert("", tk.END, values=resultado)
 
+##Validar campos para dar de alta factura
+def validar_campos_alta(proveedorCombobox):
+    proveedor=proveedorCombobox.get()
+    if not proveedor:
+        messagebox.showerror("Error", "Faltan campos por llenar.")
+    else:
+        alta_factura(proveedor)
 
 ##Validar campos##
 def validar_campos(combo_producto,entry_cantidad,id_factura, treeview,ventana_emergente):

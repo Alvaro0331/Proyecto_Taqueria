@@ -35,7 +35,7 @@ def run_app():
     
     #agregar pestañas al notebook
     notebook.add(tab1, text="Mesas")
-    notebook.add(tab2, text="Empleados")
+    notebook.add(tab2, text="Meseros")
     notebook.add(tab3, text="Proveedores")
     notebook.add(tab4, text="Platillos")
     notebook.add(tab5, text="Productos")
