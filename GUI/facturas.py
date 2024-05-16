@@ -43,7 +43,7 @@ def crear_contenido(tab):
     proveedorCombobox = ttk.Combobox(frame_formulario, values=opciones, state="readonly")
     proveedorCombobox.grid(row=0, column=1, padx=2, pady=5)
     # Boton para registrar nueva factura
-    botonFacturaAlta = ttk.Button(frame_formulario, text="Nueva factura", command=lambda: validar_campos_alta(proveedorCombobox))
+    botonFacturaAlta = ttk.Button(frame_formulario, text="Nueva factura", command=lambda: validar_campos_alta(proveedorCombobox,treeview))
     botonFacturaAlta.grid(row=1, column=0, columnspan=2, padx=2, pady=10)
 
 #Ventana para detalle de factura#
@@ -123,12 +123,13 @@ def detalles_facturas(treeview):
             treeview.insert("", tk.END, values=resultado)
 
 ##Validar campos para dar de alta factura
-def validar_campos_alta(proveedorCombobox):
+def validar_campos_alta(proveedorCombobox,treeview):
     proveedor=proveedorCombobox.get()
     if not proveedor:
         messagebox.showerror("Error", "Faltan campos por llenar.")
     else:
         alta_factura(proveedor)
+        actualizar_contenido_facturas(treeview)
 
 ##Validar campos##
 def validar_campos(combo_producto,entry_cantidad,id_factura, treeview,ventana_emergente):
@@ -164,3 +165,17 @@ def obtener_id_tipo_elemento(elementoSeleccionado):
 
     # Retornar el ID y el tipo del elemento
     return id_elemento, tipo_elemento[:-1]  # Eliminar el paréntesis del tipo
+
+
+###Actualizar contenido###
+def actualizar_contenido_facturas(treeview):
+    # Limpiar el contenido existente en el Treeview
+    for item in treeview.get_children():
+        treeview.delete(item)
+
+    # Obtener nuevas facturas de la base de datos
+    nuevas_facturas = obtener_facturas()
+
+    # Insertar las nuevas facturas en el Treeview
+    for factura in nuevas_facturas:
+        treeview.insert("", tk.END, values=factura)
