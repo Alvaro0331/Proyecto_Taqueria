@@ -3,6 +3,19 @@ from tkinter import END, messagebox, ttk
 from DB.dbcomandas import *
 
 def crear_contenido(tab):
+    def actualizar_contenido():
+        # Limpiar el Treeview
+        for item in treeview.get_children():
+            treeview.delete(item)
+        
+        # Obtener resultados de la consulta sql
+        resultados = obtener_comandas()
+        
+        # Agregar los resultados al Treeview
+        for resultado in resultados:
+            treeview.insert("", tk.END, values=resultado)
+        print("Contenido actualizado")
+
     # Crear el Treeview para mostrar las comandas
     treeview = ttk.Treeview(tab, columns=("Numero_Folio", "Fecha", "FK_Mesa", "Total_Pagar", "Mesero"), show="headings")
     treeview.heading("Numero_Folio", text="Número de Folio")
@@ -28,6 +41,10 @@ def crear_contenido(tab):
     
     #Agregar el evento select al treeview
     treeview.bind("<<TreeviewSelect>>", lambda event: detalles_comanda(treeview))
+    
+    # Crear el botón para actualizar el contenido
+    btn_actualizar = tk.Button(tab, text="Actualizar contenido", command=actualizar_contenido)
+    btn_actualizar.pack()
 
 
 ###Ventana detalle comanda###

@@ -4,6 +4,19 @@ from DB.dbproductos import *
 from GUI.producto_detalle import *
 
 def crear_contenido(tab):
+    def actualizar_contenido():
+        # Limpiar el Treeview
+        for item in tree.get_children():
+            tree.delete(item)
+        
+        # Obtener resultados de la consulta sql
+        resultados = obtener_productos()
+        
+        # Agregar los resultados al Treeview
+        for resultado in resultados:
+            tree.insert("", tk.END, values=resultado)
+        print("Contenido actualizado")
+
     # Crear un Frame para contener el Treeview y el Scrollbar
     frame = tk.Frame(tab)
     frame.pack(fill=tk.BOTH, expand=True)
@@ -50,6 +63,10 @@ def crear_contenido(tab):
     #Boton para registrar nuevo platillo
     botonPlatoAlta=ttk.Button(tab,text="Registrar producto", command= producto_alta)
     botonPlatoAlta.place(x=100,y=420)
+    # Boton para actualizar el contenido
+    # Boton para actualizar el contenido
+    boton_actualizar = ttk.Button(frame, text="Actualizar contenido", command=actualizar_contenido)
+    boton_actualizar.pack()
 
 def producto_alta():
     # Crear una nueva ventana

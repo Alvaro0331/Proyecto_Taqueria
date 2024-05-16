@@ -35,7 +35,7 @@ def actualizar_platillo(id_platillo, nombre,descripcion):
     db.close()
     return exito
 
-def platillo_alta(nombre,comentario):
+def alta_platillo(nombre,comentario):
     exito=False
     db=dbManager()
     try:

@@ -12,6 +12,8 @@ def crear_contenido(tab):
     meseroCombobox=ttk.Combobox(tab,values=opciones,state="readonly")
     #Boton para registrar nuevo empleado
     botonMesaAlta=ttk.Button(tab,text="Abrir mesa", command=lambda: validar_campos(mesaEntry,meseroCombobox))
+    botonActualizar = ttk.Button(tab, text="Actualizar", command=lambda: actualizar_combobox(meseroCombobox))
+    botonActualizar.place(x=200, y=120)
     
     #Colocar widgets
     mesaLabel.place(x=20, y=20)
@@ -28,3 +30,8 @@ def validar_campos(mesaEntry,meseroCombobox):
         messagebox.showerror("Error", "Faltan campos por llenar")
     else:
         alta_mesa(mesero,clientes)
+
+def actualizar_combobox(combobox):
+    opciones = obtener_meseros()
+    combobox['values'] = opciones
+    print("COntenido actualizado")

@@ -4,6 +4,17 @@ from DB.dbplatillo import *
 from GUI.platillo_detalle import *
 
 def crear_contenido(tab):
+    def actualizar_treeview(tree):
+        # Limpiar el contenido actual del Treeview
+        tree.delete(*tree.get_children())
+        
+        # Obtener los resultados de la consulta SQL
+        resultados = obtener_platillos()
+
+        # Agregar los resultados actualizados al treeview
+        for resultado in resultados:
+            tree.insert("", tk.END, values=resultado)
+
     # Crear un Frame para contener el Treeview y el Scrollbar
     frame = tk.Frame(tab)
     frame.pack(fill=tk.BOTH, expand=True)
@@ -47,6 +58,9 @@ def crear_contenido(tab):
     #Boton para registrar nuevo platillo
     botonPlatoAlta=ttk.Button(tab,text="Registrar platillo", command= platillo_alta)
     botonPlatoAlta.place(x=100,y=420)
+    # Boton para actualizar el contenido del Treeview
+    botonActualizar = ttk.Button(tab, text="Actualizar", command=lambda: actualizar_treeview(tree))
+    botonActualizar.place(x=100,y=460)
     
 def platillo_alta():
     # Crear una nueva ventana
@@ -82,4 +96,4 @@ def validar_campos(nombreEntry, comentarioEntry):
     if nombre=='' or comentario=='':
         messagebox.showerror("Error", "Faltan campos por llenar.")
     else:
-        platillo_alta(nombre,comentario)
+        alta_platillo(nombre,comentario)
