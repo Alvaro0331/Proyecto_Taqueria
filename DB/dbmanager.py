@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import END, messagebox, ttk
 import mysql.connector
+import subprocess
 
 class dbManager:
     def __init__(self):
@@ -22,3 +23,12 @@ class dbManager:
     def close(self):
         self.cursor.close()
         self.conn.close()
+        
+    def respaldarBD(self):
+        try:
+            with open("Respaldo_Taqueria.sql","w") as f:
+                process=subprocess.Popen(["C:\\xampp\\mysql\\bin\\mysqldump", "-h", self.host, "-u", self.user, "-p" +self.password, "taqueria"], stdout=f)
+                process.wait()
+            messagebox.showinfo("Exito","Respaldo realizado correctamente")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al hacer el respaldo: {str(e)}")
