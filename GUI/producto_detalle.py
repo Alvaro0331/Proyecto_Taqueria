@@ -40,6 +40,11 @@ def producto_detalle(tree):
             nombre_entry.insert(tk.END, valores[1])
             precio_entry.insert(tk.END, valores[2])
             existencia_entry.insert(tk.END, valores[3])
+            
+            # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
+            ventana_detalle.grab_set()
+            ventana_detalle.focus_set()
+            ventana_detalle.wait_window()
         else:
             messagebox.showerror("Error", "Por favor seleccione un empleado.")
             

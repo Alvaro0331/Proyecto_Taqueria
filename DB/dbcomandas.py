@@ -6,8 +6,13 @@ def obtener_comandas():
     #Instancia del dbManager
     db=dbManager()
     
-    #Consulta SQL
-    query="SELECT * FROM comanda"
+    # Consulta SQL para unir las tablas y obtener la información del mesero
+    query = """
+    SELECT comanda.Numero_Folio, comanda.Fecha, comanda.FK_Mesa, comanda.Total_Pagar, mesero.Nombre AS Mesero
+    FROM comanda
+    JOIN mesa ON comanda.FK_Mesa = mesa.Numero_Mesa
+    JOIN mesero ON mesa.FK_Mesero = mesero.ID_Mesero
+    """
     db.cursor.execute(query)
     
     #Obtener resultados de la busqueda

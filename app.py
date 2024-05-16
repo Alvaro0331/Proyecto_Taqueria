@@ -10,7 +10,7 @@ from GUI.mesas import crear_contenido as mesas
 def run_app():
     root=tk.Tk()
     root.title("Taquería Don Alvaro")
-    root.geometry("800x600")
+    root.geometry("1050x600")
     
     notebook=ttk.Notebook(root)
     

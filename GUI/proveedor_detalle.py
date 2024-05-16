@@ -35,7 +35,11 @@ def proveedor_detalles(tree):
             # Llenar los campos de entrada con los valores del registro seleccionado
             nombre_entry.insert(tk.END, valores[1])
             telefono_entry.insert(tk.END, valores[2])
+            # Hacer que la ventana emergente sea modal (bloquee el foco del resto de la aplicación)
+            ventana_detalle.grab_set()
+            ventana_detalle.focus_set()
+            ventana_detalle.wait_window()
         else:
-            messagebox.showerror("Error", "Por favor seleccione un empleado.")
+            messagebox.showerror("Error", "Por favor seleccione un proveedor.")
             
     return abrir_pestana

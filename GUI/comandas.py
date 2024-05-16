@@ -4,11 +4,12 @@ from DB.dbcomandas import *
 
 def crear_contenido(tab):
     # Crear el Treeview para mostrar las comandas
-    treeview = ttk.Treeview(tab, columns=("Numero_Folio", "Fecha", "FK_Mesa", "Total_Pagar"), show="headings")
+    treeview = ttk.Treeview(tab, columns=("Numero_Folio", "Fecha", "FK_Mesa", "Total_Pagar", "Mesero"), show="headings")
     treeview.heading("Numero_Folio", text="Número de Folio")
     treeview.heading("Fecha", text="Fecha")
     treeview.heading("FK_Mesa", text="Mesa")
     treeview.heading("Total_Pagar", text="Total a Pagar")
+    treeview.heading("Mesero", text="Mesero")
     
     # Crear el scrollbar vertical
     scrollbar = ttk.Scrollbar(tab, orient="vertical", command=treeview.yview)
